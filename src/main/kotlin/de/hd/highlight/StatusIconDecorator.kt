@@ -12,8 +12,8 @@ import com.intellij.ui.SimpleTextAttributes
 import java.awt.Color
 import javax.swing.Icon
 
-
 class StatusIconDecorator : ProjectViewNodeDecorator {
+
     override fun decorate(node: ProjectViewNode<*>, data: PresentationData) {
         val project: Project = node.project
         val virtualFile: VirtualFile = node.virtualFile ?: return
@@ -21,50 +21,87 @@ class StatusIconDecorator : ProjectViewNodeDecorator {
         val psiFile = PsiManager.getInstance(project).findFile(virtualFile) ?: return
         val text = psiFile.text
 
-        if(text.contains("// EXCLUDE FROM STATUS")) {
+        if (text.contains("// EXCLUDE FROM STATUS")) {
             return
         }
-        if (text.contains("// STATUS: DONE")) {
-            if(text.contains("// ICON")) {
-                data.setIcon(DoneIcon)
-            }
-            val originalPresentation = data.presentableText
-            data.clearText()
-            data.addText(originalPresentation, SimpleTextAttributes.REGULAR_ATTRIBUTES)
-            data.addText(" [DONE]",
-                SimpleTextAttributes(SimpleTextAttributes.STYLE_BOLD, JBColor(Color(0x389e34), Color(0x499c54))))
-        } else if (text.contains("// STATUS: WIP")) {
-            if(text.contains("// ICON")) {
-                data.setIcon(WipIcon)
-            }
-            val originalPresentation = data.presentableText
-            data.clearText()
-            data.addText(originalPresentation, SimpleTextAttributes.REGULAR_ATTRIBUTES)
-            data.addText(" [IN PROGRESS]",
-                SimpleTextAttributes(SimpleTextAttributes.STYLE_BOLD, JBColor(Color(0xd98a00), Color(0xe0a431))))
-        } else if (text.contains("// STATUS: TODO")) {
-            if(text.contains("// ICON")) {
-                data.setIcon(TodoIcon)
-            }
-            val originalPresentation = data.presentableText
-            data.clearText()
-            data.addText(originalPresentation, SimpleTextAttributes.REGULAR_ATTRIBUTES)
-            data.addText(" [TODO]",
-                SimpleTextAttributes(SimpleTextAttributes.STYLE_PLAIN, JBColor(Color(0x3d5afe), Color(0x539dfc))))
-        } else if (text.contains("// STATUS: INACTIVE")) {
-            if(text.contains("// ICON")) {
-                data.setIcon(InactiveIcon)
-            }
-            val originalPresentation = data.presentableText
-            data.clearText()
-            data.addText(originalPresentation, SimpleTextAttributes.REGULAR_ATTRIBUTES)
-            data.addText(" [INACTIVE]", SimpleTextAttributes.GRAYED_ATTRIBUTES)
-        }
 
+        val originalPresentation = data.presentableText
+
+        when {
+            text.contains("// STATUS: DONE") -> {
+                if (text.contains("// ICON")) {
+                    data.setIcon(DoneIcon)
+                }
+                data.clearText()
+                data.addText(originalPresentation, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+                data.addText(
+                    " [DONE]",
+                    SimpleTextAttributes(
+                        SimpleTextAttributes.STYLE_BOLD,
+                        JBColor(Color(0x389e34), Color(0x499c54))
+                    )
+                )
+            }
+
+            text.contains("// STATUS: WIP") -> {
+                if (text.contains("// ICON")) {
+                    data.setIcon(WipIcon)
+                }
+                data.clearText()
+                data.addText(originalPresentation, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+                data.addText(
+                    " [IN PROGRESS]",
+                    SimpleTextAttributes(
+                        SimpleTextAttributes.STYLE_BOLD,
+                        JBColor(Color(0xd98a00), Color(0xe0a431))
+                    )
+                )
+            }
+
+            text.contains("// STATUS: TEST") -> {
+                if (text.contains("// ICON")) {
+                    data.setIcon(TestIcon)
+                }
+                data.clearText()
+                data.addText(originalPresentation, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+                data.addText(
+                    " [TEST]",
+                    SimpleTextAttributes(
+                        SimpleTextAttributes.STYLE_BOLD,
+                        JBColor(Color(0x8e24aa), Color(0xb96ddb))
+                    )
+                )
+            }
+
+            text.contains("// STATUS: TODO") -> {
+                if (text.contains("// ICON")) {
+                    data.setIcon(TodoIcon)
+                }
+                data.clearText()
+                data.addText(originalPresentation, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+                data.addText(
+                    " [TODO]",
+                    SimpleTextAttributes(
+                        SimpleTextAttributes.STYLE_PLAIN,
+                        JBColor(Color(0x3d5afe), Color(0x539dfc))
+                    )
+                )
+            }
+
+            text.contains("// STATUS: INACTIVE") -> {
+                if (text.contains("// ICON")) {
+                    data.setIcon(InactiveIcon)
+                }
+                data.clearText()
+                data.addText(originalPresentation, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+                data.addText(" [INACTIVE]", SimpleTextAttributes.GRAYED_ATTRIBUTES)
+            }
+        }
     }
 
     object DoneIcon : Icon by AllIcons.General.GreenCheckmark
     object WipIcon : Icon by AllIcons.Process.Step_1
+    object TestIcon : Icon by AllIcons.General.InspectionsOK
     object TodoIcon : Icon by AllIcons.General.TodoDefault
     object InactiveIcon : Icon by AllIcons.General.Error
 }
