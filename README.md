@@ -11,9 +11,10 @@ This Plugin for Intellij adds a status marker icon and/or a text behind the clas
 - The plugin will automatically detect the comment tag and add the status marker icon and/or text to the class name in the project view.
 - The plugin supports the following comment tags:
   - `// STATUS: DONE`
-  - `// STATUS: IN_PROGRESS`
+  - `// STATUS: WIP`
   - `// STATUS: TODO`
   - `// STATUS: INACTIVE`
+  - `// STATUS: TEST`
 - To show the icon you need to add `// ICON`
 - To exclude a file from the plugin you can add `// EXCLUDE FROM STATUS` to the file
 
