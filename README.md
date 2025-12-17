@@ -15,6 +15,7 @@ This Plugin for Intellij adds a status marker icon and/or a text behind the clas
   - `// STATUS: TODO`
   - `// STATUS: INACTIVE`
   - `// STATUS: TEST`
+  - `// STATUS: BUG`
 - To show the icon you need to add `// ICON`
 - To exclude a file from the plugin you can add `// EXCLUDE FROM STATUS` to the file
 

@@ -73,6 +73,21 @@ class StatusIconDecorator : ProjectViewNodeDecorator {
                 )
             }
 
+            text.contains("// STATUS: BUG") -> {
+                if (text.contains("// ICON")) {
+                    data.setIcon(BugIcon)
+                }
+                data.clearText()
+                data.addText(originalPresentation, SimpleTextAttributes.REGULAR_ATTRIBUTES)
+                data.addText(
+                    " [BUG]",
+                    SimpleTextAttributes(
+                        SimpleTextAttributes.STYLE_BOLD,
+                        JBColor(Color(0xd32f2f), Color(0xef5350))
+                    )
+                )
+            }
+
             text.contains("// STATUS: TODO") -> {
                 if (text.contains("// ICON")) {
                     data.setIcon(TodoIcon)
@@ -102,6 +117,7 @@ class StatusIconDecorator : ProjectViewNodeDecorator {
     object DoneIcon : Icon by AllIcons.General.GreenCheckmark
     object WipIcon : Icon by AllIcons.Process.Step_1
     object TestIcon : Icon by AllIcons.General.InspectionsOK
+    object BugIcon : Icon by AllIcons.General.Error
     object TodoIcon : Icon by AllIcons.General.TodoDefault
     object InactiveIcon : Icon by AllIcons.General.Error
 }
